@@ -8,7 +8,9 @@
     "build:clean": "rimraf ../static/css/dist",
     "build:tailwind": "cross-env NODE_ENV=production tailwindcss --postcss -i ./src/styles.css -o ../static/css/dist/styles.css --minify",
     "dev": "cross-env NODE_ENV=development tailwindcss --postcss -i ./src/styles.css -o ../static/css/dist/styles.css -w",
-    "tailwindcss": "node ./node_modules/tailwindcss/lib/cli.js"
+    "tailwindcss": "node ./node_modules/tailwindcss/lib/cli.js",
+    "django": "python3 ../../manage.py runserver",
+    "develop": "concurrently \"npm run dev\" \"npm run django\""
   },
   "keywords": [],
   "author": "",
@@ -17,6 +19,7 @@
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "@tailwindcss/forms": "^0.5.7",
     "@tailwindcss/typography": "^0.5.10",
+    "concurrently": "^9.1.2",
     "cross-env": "^7.0.3",
     "postcss": "^8.4.32",
     "postcss-import": "^15.1.0",
