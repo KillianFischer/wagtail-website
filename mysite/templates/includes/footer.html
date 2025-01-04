@@ -1,0 +1,53 @@
+{# Load navigation_tags at the top of the file: #}
+{% load navigation_tags %}
+{% load wagtailcore_tags navigation_tags %}
+
+<footer class="bg-gray-800 text-white py-8 px-4 mt-auto">
+    <div class="container mx-auto max-w-6xl">
+        <div class="flex flex-col items-center space-y-4">
+            <!-- Wagtail credit -->
+            <p class="text-gray-400 text-sm">
+                Built with 
+                <span class="text-white hover:text-blue-400">Wagtail</span>
+            </p>
+
+            <!-- Social links -->
+            {% with linkedin_url=settings.home.NavigationSettings.linkedin_url github_url=settings.home.NavigationSettings.github_url mastodon_url=settings.home.NavigationSettings.mastodon_url %}
+                {% if linkedin_url or github_url or mastodon_url %}
+                    <div class="flex items-center space-x-4">
+                        <span class="text-gray-400">Follow me on:</span>
+                        {% if github_url %}
+                            <a href="{{ github_url }}" 
+                               class="text-gray-300 hover:text-white transition-colors duration-200"
+                               target="_blank" 
+                               rel="noopener noreferrer">
+                                GitHub
+                            </a>
+                        {% endif %}
+                        {% if linkedin_url %}
+                            <a href="{{ linkedin_url }}" 
+                               class="text-gray-300 hover:text-white transition-colors duration-200"
+                               target="_blank" 
+                               rel="noopener noreferrer">
+                                LinkedIn
+                            </a>
+                        {% endif %}
+                        {% if mastodon_url %}
+                            <a href="{{ mastodon_url }}" 
+                               class="text-gray-300 hover:text-white transition-colors duration-200"
+                               target="_blank" 
+                               rel="noopener noreferrer">
+                                Mastodon
+                            </a>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+
+            <!-- Footer text -->
+            <div class="text-gray-400 text-sm">
+                {% get_footer_text %}
+            </div>
+        </div>
+    </div>
+</footer>

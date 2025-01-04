@@ -1,7 +1,7 @@
 {% load static wagtailcore_tags wagtailuserbar %}
 {% load static tailwind_tags %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-full">
     <head>
         <meta charset="utf-8" />
         <title>
@@ -31,66 +31,18 @@
         {% endblock %}
     </head>
 
-    <body class="{% block body_class %}{% endblock %}">
-        <nav class="bg-white shadow-lg">
-          <div class="max-w-7xl mx-auto px-4">
-            <div class="flex justify-between h-16">
-              <!-- Logo/Brand -->
-              <div class="flex-shrink-0 flex items-center">
-                <a href="/" class="text-xl font-bold text-gray-800">Website-a</a>
-              </div>
-              
-              <!-- Navigation Links -->
-              <div class="hidden md:flex items-center space-x-4">
-                <a href="/" class="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">Home</a>
-                <a href="/about" class="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">About</a>
-                
-                <!-- Dropdown -->
-                <div class="relative group">
-                  <button class="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium inline-flex items-center">
-                    Services
-                    <svg class="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                    </svg>
-                  </button>
-                  <!-- Dropdown menu -->
-                  <div class="absolute left-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 hidden group-hover:block">
-                    <div class="py-1">
-                      <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Service 1</a>
-                      <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Service 2</a>
-                      <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Service 3</a>
-                    </div>
-                  </div>
-                </div>
-                
-                <a href="/contact" class="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">Contact</a>
-              </div>
+    <body class="flex flex-col min-h-full {% block body_class %}{% endblock %}">
+        {% include "includes/navbar.html" %}
         
-              <!-- Mobile menu button -->
-              <div class="md:hidden flex items-center">
-                <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-gray-500" aria-controls="mobile-menu" aria-expanded="false">
-                  <svg class="block h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                  </svg>
-                </button>
-              </div>
-            </div>
-          </div>
-        
-          <!-- Mobile menu -->
-          <div class="md:hidden hidden" id="mobile-menu">
-            <div class="px-2 pt-2 pb-3 space-y-1">
-              <a href="/" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">Home</a>
-              <a href="/about" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">About</a>
-              <a href="/services" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">Services</a>
-              <a href="/contact" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">Contact</a>
-            </div>
-          </div>
-        </nav>
         {% wagtailuserbar %}
 
-        {% block content %}{% endblock %}
-
+        <main class="flex-grow">
+            {% block content %}
+            {% endblock %}
+        </main>
+        
+        {% include "includes/footer.html" %}
+        
         {# Global javascript #}
         <script type="text/javascript" src="{% static 'js/mysite.js' %}"></script>
 
