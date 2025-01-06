@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load static wagtailcore_tags wagtailimages_tags %}
+
+{% block content %}
+<article class="container mx-auto px-4 py-8">
+    <header class="mb-8">
+        <span class="bg-blue-500 text-white px-3 py-1 rounded-full text-sm mb-4 inline-block">News</span>
+        <h1 class="text-4xl font-bold mb-4">{{ page.title }}</h1>
+        <p class="text-gray-500">{{ page.date|date:"F j, Y" }}</p>
+    </header>
+
+    {% if page.featured_image %}
+        <div class="mb-8">
+            {% image page.featured_image width-1200 class="w-full h-64 md:h-96 object-cover rounded-lg" %}
+        </div>
+    {% endif %}
+
+    {% if page.intro %}
+        <div class="text-xl text-gray-600 mb-8">
+            {{ page.intro }}
+        </div>
+    {% endif %}
+
+    <div class="prose max-w-none">
+        {{ page.body|richtext }}
+    </div>
+</article>
+{% endblock %} 

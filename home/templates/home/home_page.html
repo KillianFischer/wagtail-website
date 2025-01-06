@@ -4,25 +4,75 @@
 {% block body_class %}template-homepage{% endblock %}
 
 {% block content %}
-<div class="bg-gray-900 min-h-screen py-8">
-    <div class="container mx-auto max-w-7xl px-4">
+<div class="min-h-screen py-8">
+    <div class="container mx-auto max-w-7xl px-4 space-y-8">
+        {# Hero Carousel #}
         {% include "includes/carousel.html" %}
         
-        <!-- Main Content -->
-        <article class="bg-gray-800/90 backdrop-blur-sm rounded-2xl shadow-lg overflow-hidden border border-white/10">
-            <div class="bg-black/50 backdrop-blur-sm text-white p-8">
-                <h1 class="text-4xl font-bold">{{ page.title }}</h1>
+        {# Featured Sections #}
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
+            {# News Section #}
+            <div class="bg-black/90 backdrop-blur-sm rounded-2xl shadow-lg overflow-hidden border border-white/10">
+                <div class="bg-purple-500/10 p-6">
+                    <h2 class="text-2xl font-bold text-white mb-4">Latest News</h2>
+                    <div class="space-y-4">
+                        {% for article in page.get_recent_news %}
+                            <a href="{% pageurl article %}" class="block group">
+                                <div class="bg-black/50 rounded-lg p-4 hover:bg-white/5 transition-colors">
+                                    <h3 class="text-white font-medium group-hover:text-blue-400 transition-colors">{{ article.title }}</h3>
+                                    <p class="text-gray-400 text-sm mt-2">{{ article.intro|truncatewords:15 }}</p>
+                                </div>
+                            </a>
+                        {% endfor %}
+                    </div>
+                </div>
             </div>
-            <div class="p-8">
-                {% if page.body %}
+
+            {# Reviews Section #}
+            <div class="bg-black/90 backdrop-blur-sm rounded-2xl shadow-lg overflow-hidden border border-white/10">
+                <div class="bg-blue-500/10 p-6">
+                    <h2 class="text-2xl font-bold text-white mb-4">Latest Reviews</h2>
+                    <div class="space-y-4">
+                        {% for review in page.get_recent_reviews %}
+                            <a href="{% pageurl review %}" class="block group">
+                                <div class="bg-black/50 rounded-lg p-4 hover:bg-white/5 transition-colors">
+                                    <h3 class="text-white font-medium group-hover:text-blue-400 transition-colors">{{ review.title }}</h3>
+                                    <p class="text-gray-400 text-sm mt-2">{{ review.intro|truncatewords:15 }}</p>
+                                </div>
+                            </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            {# Tutorials Section #}
+            <div class="bg-black/90 backdrop-blur-sm rounded-2xl shadow-lg overflow-hidden border border-white/10">
+                <div class="bg-green-500/10 p-6">
+                    <h2 class="text-2xl font-bold text-white mb-4">Latest Tutorials</h2>
+                    <div class="space-y-4">
+                        {% for tutorial in page.get_recent_tutorials %}
+                            <a href="{% pageurl tutorial %}" class="block group">
+                                <div class="bg-black/50 rounded-lg p-4 hover:bg-white/5 transition-colors">
+                                    <h3 class="text-white font-medium group-hover:text-blue-400 transition-colors">{{ tutorial.title }}</h3>
+                                    <p class="text-gray-400 text-sm mt-2">{{ tutorial.intro|truncatewords:15 }}</p>
+                                </div>
+                            </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {# Main Content #}
+        {% if page.body %}
+            <article class="bg-black/90 backdrop-blur-sm rounded-2xl shadow-lg overflow-hidden border border-white/10">
+                <div class="p-8">
                     <div class="prose prose-invert prose-lg max-w-none">
                         {{ page.body|richtext }}
                     </div>
-                {% else %}
-                    <p class="text-gray-400 italic">No content in body field</p>
-                {% endif %}
-            </div>
-        </article>
+                </div>
+            </article>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

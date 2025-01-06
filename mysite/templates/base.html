@@ -28,12 +28,15 @@
         {% endblock %}
     </head>
 
-    <body class="bg-gray-900 min-h-screen">
+    <body class="min-h-screen bg-gradient-to-br from-gray-900 via-slate-900 to-zinc-900">
         {% wagtailuserbar %}
         
         {% include "includes/navbar.html" %}
-        
-        {% block content %}{% endblock %}
+
+        {# Add padding to main content to prevent it from being hidden under the fixed navbar #}
+        <main class="pt-20">
+            {% block content %}{% endblock %}
+        </main>
         
         {% include "includes/footer.html" %}
 

@@ -7,6 +7,8 @@ from modelcluster.fields import ParentalKey
 from modelcluster.contrib.taggit import ClusterTaggableManager
 from taggit.models import TaggedItemBase
 from wagtail.contrib.settings.models import BaseSiteSetting, register_setting
+from itertools import chain
+from operator import attrgetter
 
 # Base Article Page for inheritance
 class ArticlePageBase(Page):
@@ -67,15 +69,26 @@ class HomePage(Page):
     subpage_types = ['home.NewsIndexPage', 'home.ReviewsIndexPage', 'home.TutorialsIndexPage']
 
     def get_recent_articles(self):
-        # Get articles from all sections (News, Reviews, and Tutorials)
-        articles = (
-            Page.objects.live()
-            .public()
-            .specific()
-            .type(NewsArticlePage, ReviewArticlePage, TutorialArticlePage)
-            .order_by('-first_published_at')[:10]
-        )
-        return articles
+        # Get recent articles from all sections
+        news = NewsArticlePage.objects.live().public()
+        reviews = ReviewArticlePage.objects.live().public()
+        tutorials = TutorialArticlePage.objects.live().public()
+        
+        # Combine all articles
+        all_articles = list(chain(news, reviews, tutorials))
+        # Sort by first_published_at
+        sorted_articles = sorted(all_articles, key=attrgetter('first_published_at'), reverse=True)
+        # Return first 10
+        return sorted_articles[:10]
+
+    def get_recent_news(self):
+        return NewsArticlePage.objects.live().public().order_by('-first_published_at')[:3]
+
+    def get_recent_reviews(self):
+        return ReviewArticlePage.objects.live().public().order_by('-first_published_at')[:3]
+
+    def get_recent_tutorials(self):
+        return TutorialArticlePage.objects.live().public().order_by('-first_published_at')[:3]
 
 # News section
 class NewsIndexPage(IndexPageBase):
