@@ -1,25 +1,25 @@
 {% extends "base.html" %}
-{% load wagtailcore_tags %}
+{% load static wagtailcore_tags wagtailimages_tags %}
 
 {% block body_class %}template-homepage{% endblock %}
 
 {% block content %}
-<div class="bg-gray-100 min-h-screen">
-    <div class="container mx-auto max-w-4xl px-4 py-8">
-        <article class="bg-white shadow-lg rounded-lg overflow-hidden">
-            <!-- Header section -->
-            <div class="bg-gray-800 text-white p-6">
-                <h1 class="text-3xl font-bold">{{ page.title }}</h1>
+<div class="bg-gray-900 min-h-screen py-8">
+    <div class="container mx-auto max-w-7xl px-4">
+        {% include "includes/carousel.html" %}
+        
+        <!-- Main Content -->
+        <article class="bg-gray-800/90 backdrop-blur-sm rounded-2xl shadow-lg overflow-hidden border border-white/10">
+            <div class="bg-black/50 backdrop-blur-sm text-white p-8">
+                <h1 class="text-4xl font-bold">{{ page.title }}</h1>
             </div>
-
-            <!-- Content section -->
-            <div class="p-6">
+            <div class="p-8">
                 {% if page.body %}
-                    <div class="prose prose-lg max-w-none">
+                    <div class="prose prose-invert prose-lg max-w-none">
                         {{ page.body|richtext }}
                     </div>
                 {% else %}
-                    <p class="text-gray-600 italic">No content in body field</p>
+                    <p class="text-gray-400 italic">No content in body field</p>
                 {% endif %}
             </div>
         </article>

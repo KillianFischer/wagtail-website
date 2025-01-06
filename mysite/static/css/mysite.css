@@ -1,0 +1,11 @@
+/* Only essential Swiper overrides */
+.swiper-pagination-bullet {
+    @apply w-2 h-2 bg-white/10 border border-white/10 opacity-100;
+    background-color: white !important;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+    background: none !important;
+    color: white !important;
+}

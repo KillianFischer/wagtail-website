@@ -18,32 +18,27 @@
         {% endif %}
         <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-        {# Force all links in the live preview panel to be opened in a new tab #}
-        {% if request.in_preview_panel %}
-        <base target="_blank">
-        {% endif %}
-
         {# Global stylesheets #}
-        <link rel="stylesheet" type="text/css" href="{% static 'css/mysite.css' %}">
         {% tailwind_css %}
+        <link rel="stylesheet" type="text/css" href="{% static 'css/mysite.css' %}">
+        <link rel="stylesheet" href="{% static 'css/swiper-bundle.min.css' %}">
+        
         {% block extra_css %}
         {# Override this in templates to add extra stylesheets #}
         {% endblock %}
     </head>
 
-    <body class="flex flex-col min-h-full {% block body_class %}{% endblock %}">
+    <body class="bg-gray-900 min-h-screen">
+        {% wagtailuserbar %}
+        
         {% include "includes/navbar.html" %}
         
-        {% wagtailuserbar %}
-
-        <main class="flex-grow">
-            {% block content %}
-            {% endblock %}
-        </main>
+        {% block content %}{% endblock %}
         
         {% include "includes/footer.html" %}
-        
+
         {# Global javascript #}
+        <script src="{% static 'js/swiper-bundle.min.js' %}"></script>
         <script type="text/javascript" src="{% static 'js/mysite.js' %}"></script>
 
         {% block extra_js %}

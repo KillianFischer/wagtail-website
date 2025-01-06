@@ -1,35 +1,33 @@
-{# Load navigation_tags at the top of the file: #}
 {% load navigation_tags %}
 {% load wagtailcore_tags navigation_tags %}
 
-<footer class="bg-gray-800 text-white py-8 px-4 mt-auto">
-    <div class="container mx-auto max-w-6xl">
-        <div class="flex flex-col items-center space-y-4">
-
-            <!-- Social links -->
-            {% with linkedin_url=settings.home.NavigationSettings.linkedin_url github_url=settings.home.NavigationSettings.github_url mastodon_url=settings.home.NavigationSettings.mastodon_url %}
-                {% if linkedin_url or github_url or mastodon_url %}
-                    <div class="flex items-center space-x-4">
-                        <span class="text-gray-400">Follow me on:</span>
-                        {% if github_url %}
-                            <a href="{{ github_url }}" 
-                               class="text-gray-300 hover:text-white transition-colors duration-200"
+<div class="w-full px-4 py-4">
+    <footer class="container mx-auto max-w-7xl bg-black/90 backdrop-blur-sm text-white rounded-2xl shadow-lg border border-white/10">
+        <div class="px-8 py-6">
+            <div class="flex flex-col items-center space-y-6">
+                <!-- Social links -->
+                {% if social_settings %}
+                    <div class="flex items-center space-x-6">
+                        <span class="text-gray-400 text-sm">Follow me on:</span>
+                        {% if social_settings.github_url %}
+                            <a href="{{ social_settings.github_url }}" 
+                               class="text-gray-200 hover:text-white transition-colors duration-200 text-sm"
                                target="_blank" 
                                rel="noopener noreferrer">
                                 GitHub
                             </a>
                         {% endif %}
-                        {% if linkedin_url %}
-                            <a href="{{ linkedin_url }}" 
-                               class="text-gray-300 hover:text-white transition-colors duration-200"
+                        {% if social_settings.linkedin_url %}
+                            <a href="{{ social_settings.linkedin_url }}" 
+                               class="text-gray-200 hover:text-white transition-colors duration-200 text-sm"
                                target="_blank" 
                                rel="noopener noreferrer">
                                 LinkedIn
                             </a>
                         {% endif %}
-                        {% if mastodon_url %}
-                            <a href="{{ mastodon_url }}" 
-                               class="text-gray-300 hover:text-white transition-colors duration-200"
+                        {% if social_settings.mastodon_url %}
+                            <a href="{{ social_settings.mastodon_url }}" 
+                               class="text-gray-200 hover:text-white transition-colors duration-200 text-sm"
                                target="_blank" 
                                rel="noopener noreferrer">
                                 Mastodon
@@ -37,12 +35,19 @@
                         {% endif %}
                     </div>
                 {% endif %}
-            {% endwith %}
 
-            <!-- Footer text -->
-            <div class="text-gray-400 text-sm">
-                {% get_footer_text %}
+                <!-- Footer Text -->
+                {% if footer_settings.body %}
+                    <div class="text-gray-300">
+                        {{ footer_settings.body|richtext }}
+                    </div>
+                {% endif %}
+
+                <!-- Copyright -->
+                <div class="text-gray-400 text-sm">
+                    © {% now "Y" %} Your Website. All rights reserved.
+                </div>
             </div>
         </div>
-    </div>
-</footer>
+    </footer>
+</div>

@@ -1,72 +1,54 @@
 from django.db import models
 from wagtail.models import Page
 from wagtail.fields import RichTextField
-from wagtail.admin.panels import (
-    FieldPanel,
-    MultiFieldPanel,
-    PublishingPanel,
-)
-from wagtail.models import (
-    DraftStateMixin,
-    PreviewableMixin,
-    RevisionMixin,
-    TranslatableMixin,
-)
-from wagtail.contrib.settings.models import (
-    BaseGenericSetting,
-    register_setting,
-)
-
-from wagtail.snippets.models import register_snippet
-
-@register_setting
-class NavigationSettings(BaseGenericSetting):
-    linkedin_url = models.URLField(verbose_name="LinkedIn URL", blank=True)
-    github_url = models.URLField(verbose_name="GitHub URL", blank=True)
-    mastodon_url = models.URLField(verbose_name="Mastodon URL", blank=True)
-
-    panels = [
-        MultiFieldPanel(
-            [
-                FieldPanel("linkedin_url"),
-                FieldPanel("github_url"),
-                FieldPanel("mastodon_url"),
-            ],
-            "Social settings",
-        )
-    ]
-    
-@register_snippet
-class FooterText(
-    DraftStateMixin,
-    RevisionMixin,
-    PreviewableMixin,
-    TranslatableMixin,
-    models.Model,
-):
-    body = RichTextField()
-
-    panels = [
-        FieldPanel("body"),
-        PublishingPanel(),
-    ]
-
-    def __str__(self):
-        return "Footer text"
-
-    def get_preview_template(self, request, mode_name):
-        return "base.html"
-
-    def get_preview_context(self, request, mode_name):
-        return {"footer_text": self.body}
-
-    class Meta(TranslatableMixin.Meta):
-        verbose_name_plural = "Footer Text"
-
+from wagtail.admin.panels import FieldPanel
+from wagtail.contrib.settings.models import BaseSiteSetting, register_setting
 
 class HomePage(Page):
     body = RichTextField(blank=True)
+    featured_image = models.ForeignKey(
+        'wagtailimages.Image',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='+'
+    )
 
     content_panels = Page.content_panels + [
         FieldPanel('body'),
+        FieldPanel('featured_image'),
     ]
+
+    def get_recent_articles(self):
+        articles = Page.objects.live().descendant_of(self).specific()
+        articles = articles.order_by('-first_published_at')[:5]
+        return articles
+
+@register_setting
+class SocialMediaSettings(BaseSiteSetting):
+    linkedin_url = models.URLField(blank=True)
+    github_url = models.URLField(blank=True)
+    mastodon_url = models.URLField(blank=True)
+
+    panels = [
+        FieldPanel('linkedin_url'),
+        FieldPanel('github_url'),
+        FieldPanel('mastodon_url'),
+    ]
+
+    class Meta:
+        verbose_name = 'Social Media Settings'
+
+@register_setting
+class FooterSettings(BaseSiteSetting):
+    body = RichTextField(
+        blank=True,
+        features=['bold', 'italic', 'link']
+    )
+
+    panels = [
+        FieldPanel('body'),
+    ]
+
+    class Meta:
+        verbose_name = 'Footer Settings'

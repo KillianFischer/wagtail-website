@@ -1,21 +1,16 @@
 from django import template
-from django.core.cache import cache
-from home.models import FooterText
+from home.models import SocialMediaSettings, FooterSettings
 
 register = template.Library()
 
-@register.inclusion_tag('includes/footer_text.html')
-def get_footer_text():
-    # Try to get footer text from cache first
-    footer_text = cache.get('footer_text')
-    
-    if footer_text is None:
-        # If not in cache, get from database
-        footer_text = FooterText.objects.filter(live=True).first()
-        # Cache the result for 1 hour (3600 seconds)
-        if footer_text:
-            cache.set('footer_text', footer_text, 3600)
+@register.simple_tag(takes_context=True)
+def get_site_root(context):
+    return context['request'].site.root_page
 
+@register.inclusion_tag('includes/footer.html', takes_context=True)
+def get_footer(context):
     return {
-        'footer_text': footer_text
+        'footer_settings': FooterSettings.for_site(context['request'].site),
+        'social_settings': SocialMediaSettings.for_site(context['request'].site),
+        'request': context['request'],
     }
