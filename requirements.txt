@@ -4,7 +4,7 @@ django-browser-reload==1.12.1
 django-tailwind==3.8.0
 gunicorn==21.2.0
 pillow==11.1.0
-psycopg==3.2.3
+psycopg2-binary==2.9.9
 python-dotenv==1.0.1
 wagtail==6.3.1
 whitenoise==6.6.0
