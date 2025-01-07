@@ -12,13 +12,17 @@ nixPkgs = [
 PYTHON_VERSION = "3"
 VIRTUAL_ENV = "/opt/venv"
 PATH = "/opt/venv/bin:$PATH"
+PYTHONUNBUFFERED = "1"
+DJANGO_SETTINGS_MODULE = "a_core.settings"
 
 [phases.build]
 cmds = [
     "rm -rf /opt/venv || true",
     "python3 -m venv /opt/venv",
-    "pip install --no-cache-dir -r requirements.txt"
+    "pip install --no-cache-dir -r requirements.txt",
+    "python3 manage.py check --deploy",
+    "python3 manage.py collectstatic --noinput || true"
 ]
 
 [start]
-cmd = "gunicorn a_core.wsgi:application --bind 0.0.0.0:$PORT" 
+cmd = "gunicorn a_core.wsgi:application --bind 0.0.0.0:$PORT --workers 4 --timeout 120 --access-logfile - --error-logfile - --log-level debug" 
