@@ -58,3 +58,10 @@ Desktop.ini
 
 # Media Files
 media/
+
+# Python
+*.pyc
+__pycache__/
+db.sqlite3
+/static/
+/media/

@@ -58,3 +58,6 @@ RUN python manage.py collectstatic --noinput --clear
 #   phase facilities of your hosting platform. This is used only so the
 #   Wagtail instance can be started with a simple "docker run" command.
 CMD set -xe; python manage.py migrate --noinput; gunicorn mysite.wsgi:application
+
+# Command to run Gunicorn
+CMD ["gunicorn", "--config", "gunicorn.conf.py", "mysite.wsgi:application"]
