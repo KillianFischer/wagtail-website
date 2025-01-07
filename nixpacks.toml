@@ -10,11 +10,10 @@ nixPkgs = [
 
 [env]
 PYTHON_VERSION = "3"
-PATH = "/usr/bin:$PATH"
 
 [phases.build]
 cmds = [
-    "/usr/bin/python3 -m venv --copies /opt/venv",
+    "which python3 > /tmp/python_path && $(cat /tmp/python_path) -m venv --copies /opt/venv",
     ". /opt/venv/bin/activate",
     "pip install -r requirements.txt"
 ]
