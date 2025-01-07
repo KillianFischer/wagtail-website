@@ -5,8 +5,7 @@ nixPkgs = [
     "postgresql",
     "zlib",
     "python3",
-    "python3Packages.pip",
-    "python3Packages.venv"
+    "python3Packages.pip"
 ]
 
 [env]
