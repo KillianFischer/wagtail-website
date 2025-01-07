@@ -14,15 +14,16 @@ VIRTUAL_ENV = "/opt/venv"
 PATH = "/opt/venv/bin:$PATH"
 PYTHONUNBUFFERED = "1"
 DJANGO_SETTINGS_MODULE = "a_core.settings"
+PORT = "8080"
 
 [phases.build]
 cmds = [
     "rm -rf /opt/venv || true",
     "python3 -m venv /opt/venv",
     "pip install --no-cache-dir -r requirements.txt",
-    "python3 manage.py check --deploy",
+    "pip install django-browser-reload",
     "python3 manage.py collectstatic --noinput || true"
 ]
 
 [start]
-cmd = "gunicorn a_core.wsgi:application --bind 0.0.0.0:$PORT --workers 4 --timeout 120 --access-logfile - --error-logfile - --log-level debug" 
+cmd = "gunicorn a_core.wsgi:application --bind 0.0.0.0:${PORT:-8080} --workers 4 --timeout 120 --access-logfile - --error-logfile - --log-level debug" 
