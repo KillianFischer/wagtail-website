@@ -10,12 +10,14 @@ nixPkgs = [
 
 [env]
 PYTHON_VERSION = "3"
+VIRTUAL_ENV = "/opt/venv"
+PATH = "/opt/venv/bin:$PATH"
 
 [phases.build]
 cmds = [
-    "which python3 > /tmp/python_path && $(cat /tmp/python_path) -m venv --copies /opt/venv",
-    ". /opt/venv/bin/activate",
-    "pip install -r requirements.txt"
+    "rm -rf /opt/venv || true",
+    "python3 -m venv /opt/venv",
+    "pip install --no-cache-dir -r requirements.txt"
 ]
 
 [start]
