@@ -1,8 +1,10 @@
 Django==5.1.4
-wagtail==6.3.1
+dj-database-url==2.1.0
+django-browser-reload==1.12.1
 django-tailwind==3.8.0
 gunicorn==21.2.0
-whitenoise==6.6.0
+pillow==11.1.0
 psycopg==3.2.3
 python-dotenv==1.0.1
-dj-database-url==2.1.0
+wagtail==6.3.1
+whitenoise==6.6.0
