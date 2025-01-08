@@ -1,6 +1,4 @@
 # Django project
-/media/
-/static/
 *.sqlite3
 
 # Python and others
@@ -47,7 +45,6 @@ venv/
 db.sqlite3
 media/
 node_modules/
-theme/static_src/node_modules/
 .git
 .gitignore
 .dockerignore

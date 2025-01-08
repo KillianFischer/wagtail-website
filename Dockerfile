@@ -27,6 +27,10 @@ RUN apt-get update --yes --quiet && \
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Create necessary directories and set permissions
+RUN mkdir -p /app/staticfiles /app/media && \
+    chmod -R 755 /app/staticfiles /app/media
+
 # Copy project files
 COPY . .
 
@@ -34,10 +38,10 @@ COPY . .
 WORKDIR /app/theme/static_src
 RUN npm install
 RUN npm run build
-RUN npm run dev
 
-# Back to app directory
+# Back to app directory and collect static files
 WORKDIR /app
+RUN python manage.py collectstatic --noinput
 
 # Expose port
 EXPOSE 8000
