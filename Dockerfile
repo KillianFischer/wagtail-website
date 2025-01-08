@@ -19,6 +19,7 @@ RUN apt-get update --yes --quiet && \
     zlib1g-dev \
     libwebp-dev \
     curl \
+    sqlite3 \
     && curl -fsSL https://deb.nodesource.com/setup_${NODE_VERSION}.x | bash - \
     && apt-get install -y nodejs \
     && rm -rf /var/lib/apt/lists/*
@@ -39,8 +40,13 @@ WORKDIR /app/theme/static_src
 RUN npm install
 RUN npm run build
 
-# Back to app directory and collect static files
+# Back to app directory
 WORKDIR /app
+
+# Initialize database
+RUN python manage.py migrate
+
+# Collect static files
 RUN python manage.py collectstatic --noinput
 
 # Expose port

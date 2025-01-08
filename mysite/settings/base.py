@@ -93,12 +93,10 @@ WSGI_APPLICATION = "mysite.wsgi.application"
 
 # Database configuration
 DATABASES = {
-    'default': dj_database_url.config(
-        default=os.getenv('DATABASE_URL'),
-        conn_max_age=600,
-        conn_health_checks=True,
-        ssl_require=True
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
 }
 
 
@@ -177,9 +175,9 @@ WAGTAILDOCS_EXTENSIONS = ['csv', 'docx', 'key', 'odt', 'pdf', 'pptx', 'rtf', 'tx
 
 TAILWIND_APP_NAME = 'theme'
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'website-a-production.up.railway.app']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'KillianFischer.eu.pythonanywhere.com']
 
-CSRF_TRUSTED_ORIGINS = ['https://website-a-production.up.railway.app']
+CSRF_TRUSTED_ORIGINS = ['https://KillianFischer.eu.pythonanywhere.com']
 
 INTERNAL_IPS = [
     "127.0.0.1","localhost"

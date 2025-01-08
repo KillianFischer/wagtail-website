@@ -1,6 +1,3 @@
-# Django project
-*.sqlite3
-
 # Python and others
 __pycache__
 *.pyc
