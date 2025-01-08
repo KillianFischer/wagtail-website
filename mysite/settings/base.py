@@ -175,9 +175,9 @@ WAGTAILDOCS_EXTENSIONS = ['csv', 'docx', 'key', 'odt', 'pdf', 'pptx', 'rtf', 'tx
 
 TAILWIND_APP_NAME = 'theme'
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'KillianFischer.eu.pythonanywhere.com']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'plankton-app-qnkmw.ondigitalocean.app']
 
-CSRF_TRUSTED_ORIGINS = ['https://KillianFischer.eu.pythonanywhere.com']
+CSRF_TRUSTED_ORIGINS = ['https://plankton-app-qnkmw.ondigitalocean.app']
 
 INTERNAL_IPS = [
     "127.0.0.1","localhost"
