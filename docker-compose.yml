@@ -2,7 +2,7 @@ services:
   web:
     build: .
     ports:
-      - "8000:8000"
+      - "8080:8080"
     environment:
       - DJANGO_SETTINGS_MODULE=mysite.settings.base
       - DEBUG=True
@@ -19,7 +19,7 @@ services:
       sh -c "rm -rf /app/staticfiles/* &&
              python manage.py migrate &&
              python manage.py collectstatic --noinput --clear &&
-             python manage.py runserver 0.0.0.0:8000"
+             python manage.py runserver 0.0.0.0:8080"
     depends_on:
       - db
   

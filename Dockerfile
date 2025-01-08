@@ -43,4 +43,4 @@ WORKDIR /app
 EXPOSE 8000
 
 # Start Gunicorn
-CMD ["sh", "-c", "DJANGO_SETTINGS_MODULE=mysite.settings exec gunicorn mysite.wsgi:application --bind 0.0.0.0:$PORT --workers 4 --timeout 120"]
+CMD ["sh", "-c", "DJANGO_SETTINGS_MODULE=mysite.settings.base exec gunicorn mysite.wsgi:application --bind 0.0.0.0:8080 --workers 4 --timeout 120"]
