@@ -53,7 +53,6 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "tailwind",
     "theme",
-    "django_browser_reload",
 ]
 
 MIDDLEWARE = [
@@ -66,7 +65,6 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "wagtail.contrib.redirects.middleware.RedirectMiddleware",
-    "django_browser_reload.middleware.BrowserReloadMiddleware",
 ]
 
 ROOT_URLCONF = "mysite.urls"
@@ -92,30 +90,15 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "mysite.wsgi.application"
 
-
-# Database
-# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-
+# Database configuration
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
-    }
+    'default': dj_database_url.config(
+        default=os.getenv('DATABASE_URL'),
+        conn_max_age=600,
+        conn_health_checks=True,
+        ssl_require=True
+    )
 }
-
-POSTGRES_LOCALLY = True
-if POSTGRES_LOCALLY == True:
-    DATABASES["default"] = {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.getenv('DB_NAME'),
-        "USER": os.getenv('DB_USER'),
-        "PASSWORD": os.getenv('DB_PASSWORD'),
-        "HOST": os.getenv('DB_HOST'),
-        "PORT": os.getenv('DB_PORT'),
-        "OPTIONS": {
-            "sslmode": "require",
-        }
-    }
 
 
 # Password validation
@@ -161,30 +144,11 @@ STATICFILES_DIRS = [
     os.path.join(PROJECT_DIR, "static"),
 ]
 
-STATIC_ROOT = os.path.join(BASE_DIR, "static")
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 STATIC_URL = "/static/"
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'mysite/static/'),
-]
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = "/media/"
-
-# Default storage settings, with the staticfiles storage updated.
-# See https://docs.djangoproject.com/en/5.1/ref/settings/#std-setting-STORAGES
-STORAGES = {
-    "default": {
-        "BACKEND": "django.core.files.storage.FileSystemStorage",
-    },
-    # ManifestStaticFilesStorage is recommended in production, to prevent
-    # outdated JavaScript / CSS assets being served from cache
-    # (e.g. after a Wagtail upgrade).
-    # See https://docs.djangoproject.com/en/5.1/ref/contrib/staticfiles/#manifeststaticfilesstorage
-    "staticfiles": {
-        "BACKEND": "django.contrib.staticfiles.storage.ManifestStaticFilesStorage",
-    },
-}
-
 
 # Wagtail settings
 
@@ -215,8 +179,11 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'website-a-production.up.railway.app'
 CSRF_TRUSTED_ORIGINS = ['https://website-a-production.up.railway.app']
 
 INTERNAL_IPS = [
-    "127.0.0.1",
+    "127.0.0.1","localhost"
 ]
 
 # Whitenoise settings
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = os.getenv('SECRET_KEY', 'your-secret-key-here')

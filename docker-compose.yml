@@ -1,0 +1,43 @@
+services:
+  web:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - DJANGO_SETTINGS_MODULE=mysite.settings.base
+      - DEBUG=True
+      - PYTHONPATH=/app
+      - SECRET_KEY=your-secret-key-here
+      - ALLOWED_HOSTS=localhost,127.0.0.1
+      - PYTHONUNBUFFERED=1
+      - STATICFILES_STORAGE=whitenoise.storage.CompressedStaticFilesStorage
+    volumes:
+      - .:/app
+      - static_volume:/app/staticfiles
+      - media_volume:/app/media
+    command: >
+      sh -c "rm -rf /app/staticfiles/* &&
+             python manage.py migrate &&
+             python manage.py collectstatic --noinput --clear &&
+             python manage.py runserver 0.0.0.0:8000"
+    depends_on:
+      - db
+  
+  db:
+    image: postgres:15
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+volumes:
+  postgres_data:
+  static_volume:
+  media_volume: 

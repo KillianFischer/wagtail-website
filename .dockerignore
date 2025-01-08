@@ -37,3 +37,17 @@ wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+
+# Exclude unnecessary files
+*.pyo
+*.pyd
+.env
+.venv
+venv/
+db.sqlite3
+media/
+node_modules/
+theme/static_src/node_modules/
+.git
+.gitignore
+.dockerignore
