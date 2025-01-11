@@ -1,4 +1,5 @@
 from .base import *
+from .storage import *
 
 DEBUG = False
 
