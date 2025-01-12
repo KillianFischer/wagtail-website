@@ -4,7 +4,6 @@ FROM python:3.12-slim
 # Set environment variables
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
-    PORT=8000 \
     NODE_VERSION=20
 
 # Set work directory
@@ -28,7 +27,7 @@ RUN apt-get update --yes --quiet && \
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Create necessary directories and set permissions
+# Create necessary directories
 RUN mkdir -p /app/staticfiles /app/media && \
     chmod -R 755 /app/staticfiles /app/media
 
@@ -43,14 +42,11 @@ RUN npm run build
 # Back to app directory
 WORKDIR /app
 
-# Initialize database
-RUN python manage.py migrate
-
-# Collect static files
-RUN python manage.py collectstatic --noinput
-
 # Expose port
-EXPOSE 8000
+EXPOSE 8080
 
-# Start Gunicorn
-CMD ["sh", "-c", "DJANGO_SETTINGS_MODULE=mysite.settings.base exec gunicorn mysite.wsgi:application --bind 0.0.0.0:8080 --workers 4 --timeout 120"]
+# Create entrypoint script
+COPY docker-entrypoint.sh /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh
+
+ENTRYPOINT ["/docker-entrypoint.sh"]
