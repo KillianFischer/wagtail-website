@@ -150,12 +150,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Storage configuration
 STORAGES = {
-    'default': {
-        'BACKEND': 'storages.backends.s3boto3.S3Boto3Storage',
-    },
-    'staticfiles': {
-        'BACKEND': 'mysite.storage.CustomWhiteNoiseStorage',
-    },
     'original_images': {
         'BACKEND': 'home.models.CustomS3Storage',
     },
@@ -236,10 +230,6 @@ STORAGES = {
     }
 }
 
-# Media settings
-MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/"
-MEDIA_ROOT = ''
-
 # Wagtail settings
 WAGTAILIMAGES_IMAGE_MODEL = 'home.CustomImage'
 
@@ -265,41 +255,8 @@ WAGTAILIMAGES_FEATURE_DETECTION_ENABLED = False
 WAGTAIL_USAGE_COUNT_ENABLED = True
 WAGTAILIMAGES_MAX_UPLOAD_SIZE = 20 * 1024 * 1024  # 20MB
 
-# Image paths
-ORIGINAL_IMAGES_PATH = 'original_images'
-IMAGES_PATH = 'images'
-
 # Keep static files local (using whitenoise)
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
-# Add these to your existing settings
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-        },
-    },
-    'loggers': {
-        'django': {
-            'handlers': ['console'],
-            'level': 'INFO',
-        },
-        'storages': {
-            'handlers': ['console'],
-            'level': 'DEBUG',
-        },
-        'boto3': {
-            'handlers': ['console'],
-            'level': 'DEBUG',
-        },
-        'botocore': {
-            'handlers': ['console'],
-            'level': 'DEBUG',
-        },
-    },
-}
 
 # Wagtail image settings
 WAGTAILIMAGES_FORMAT_CONVERSIONS = {

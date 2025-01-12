@@ -39,7 +39,6 @@ wheels/
 .env
 .venv
 venv/
-db.sqlite3
 node_modules/
 .git
 .gitignore
