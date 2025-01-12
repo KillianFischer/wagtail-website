@@ -298,3 +298,18 @@ WAGTAILIMAGES_IMAGE_MODEL = 'home.CustomImage'
 WAGTAILIMAGES_FEATURE_DETECTION_ENABLED = False
 WAGTAIL_USAGE_COUNT_ENABLED = True
 WAGTAILIMAGES_MAX_UPLOAD_SIZE = 20 * 1024 * 1024  # 20MB
+
+
+# Update allowed hosts
+ALLOWED_HOSTS = ['plankton-app-qnkmw.ondigitalocean.app', '.ondigitalocean.app']
+
+# Ensure CSRF settings are correct
+CSRF_TRUSTED_ORIGINS = ['https://plankton-app-qnkmw.ondigitalocean.app']
+
+# Force HTTPS
+SECURE_SSL_REDIRECT = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# Session security
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True

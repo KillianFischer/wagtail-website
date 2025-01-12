@@ -4,7 +4,8 @@ FROM python:3.12-slim
 # Set environment variables
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
-    NODE_VERSION=20
+    NODE_VERSION=20 \
+    DJANGO_SETTINGS_MODULE=mysite.settings.production
 
 # Set work directory
 WORKDIR /app
@@ -42,11 +43,11 @@ RUN npm run build
 # Back to app directory
 WORKDIR /app
 
-# Expose port
-EXPOSE 8080
-
-# Create entrypoint script
+# Copy and set permissions for entrypoint script
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh
+
+# Expose port
+EXPOSE 8080
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
