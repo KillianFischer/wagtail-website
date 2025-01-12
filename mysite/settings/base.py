@@ -151,7 +151,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # Storage configuration
 STORAGES = {
     'default': {
-        'BACKEND': 'home.storage.CustomS3Storage',
+        'BACKEND': 'home.models.CustomS3Storage',
     },
     'staticfiles': {
         'BACKEND': 'mysite.storage.CustomWhiteNoiseStorage',
