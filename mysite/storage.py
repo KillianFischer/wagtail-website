@@ -16,21 +16,21 @@ class CustomWhiteNoiseStorage(CompressedManifestStaticFilesStorage):
         ]
 
         filtered_paths = {}
-        for path in paths:
+        for path, hashed_path in paths.items():
             if any(pattern in path for pattern in skip_patterns):
                 # Directly yield skipped files without processing
                 if not dry_run:
                     original_path = self.path(path)
-                    processed_path = self.path(paths[path])
+                    processed_path = self.path(hashed_path)
                     
                     if os.path.exists(original_path):
                         os.makedirs(os.path.dirname(processed_path), exist_ok=True)
                         with open(original_path, 'rb') as source:
                             with open(processed_path, 'wb') as dest:
                                 dest.write(source.read())
-                yield path, paths[path], True
+                yield path, hashed_path, True
             else:
-                filtered_paths[path] = paths[path]
+                filtered_paths[path] = hashed_path
 
         # Process remaining files
         if filtered_paths:
