@@ -153,6 +153,9 @@ STORAGES = {
     },
     'staticfiles': {
         'BACKEND': 'mysite.storage.CustomWhiteNoiseStorage',
+    },
+    'images': {
+        'BACKEND': 'home.storage.CustomS3Storage',
     }
 }
 
@@ -232,3 +235,4 @@ MEDIA_ROOT = ''
 
 # Wagtail settings
 WAGTAILIMAGES_IMAGE_MODEL = 'home.CustomImage'
+WAGTAILIMAGES_FEATURE_DETECTION_ENABLED = False
