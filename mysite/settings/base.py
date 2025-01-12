@@ -202,9 +202,6 @@ INTERNAL_IPS = [
     "127.0.0.1","localhost"
 ]
 
-# Whitenoise settings
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv('SECRET_KEY', 'your-secret-key-here')
 
@@ -282,7 +279,7 @@ AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.{AWS_S3_REGION_NAME}.digitalo
 # Additional settings for public access
 AWS_DEFAULT_ACL = 'public-read'
 AWS_QUERYSTRING_AUTH = False
-AWS_S3_FILE_OVERWRITE = False
+AWS_S3_FILE_OVERWRITE = Falseccx
 
 # Media settings
 MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/"
@@ -298,18 +295,3 @@ WAGTAILIMAGES_IMAGE_MODEL = 'home.CustomImage'
 WAGTAILIMAGES_FEATURE_DETECTION_ENABLED = False
 WAGTAIL_USAGE_COUNT_ENABLED = True
 WAGTAILIMAGES_MAX_UPLOAD_SIZE = 20 * 1024 * 1024  # 20MB
-
-
-# Update allowed hosts
-ALLOWED_HOSTS = ['plankton-app-qnkmw.ondigitalocean.app', '.ondigitalocean.app']
-
-# Ensure CSRF settings are correct
-CSRF_TRUSTED_ORIGINS = ['https://plankton-app-qnkmw.ondigitalocean.app']
-
-# Force HTTPS
-SECURE_SSL_REDIRECT = True
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-
-# Session security
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
