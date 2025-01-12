@@ -10,7 +10,7 @@ from wagtail.contrib.settings.models import BaseSiteSetting, register_setting
 from itertools import chain
 from operator import attrgetter
 from wagtail.images.models import Image, AbstractImage, AbstractRendition
-from storages.backends.s3boto3 import S3Boto3Storage
+from .storage import CustomS3Storage, RenditionS3Storage
 from django.conf import settings
 
 # Base Article Page for inheritance
@@ -151,32 +151,18 @@ class FooterSettings(BaseSiteSetting):
         FieldPanel('body'),
     ]
 
-class CustomS3Storage(S3Boto3Storage):
-    bucket_name = settings.AWS_STORAGE_BUCKET_NAME
-    location = 'original_images'
-    file_overwrite = False
-    default_acl = 'public-read'
-    custom_domain = settings.AWS_S3_CUSTOM_DOMAIN
-    url_protocol = 'https:'
-    endpoint_url = settings.AWS_S3_ENDPOINT_URL
-
-class RenditionS3Storage(S3Boto3Storage):
-    bucket_name = settings.AWS_STORAGE_BUCKET_NAME
-    location = 'images'
-    file_overwrite = False
-    default_acl = 'public-read'
-    custom_domain = settings.AWS_S3_CUSTOM_DOMAIN
-    url_protocol = 'https:'
-    endpoint_url = settings.AWS_S3_ENDPOINT_URL
-
 class CustomImage(AbstractImage):
     admin_form_fields = Image.admin_form_fields
     
-    storage = CustomS3Storage()
+    def get_storage(self):
+        return CustomS3Storage()
+    
+    storage = property(get_storage)
 
     def get_upload_to(self, filename):
-        # Just return the filename since the storage class handles the path
-        return filename
+        # Add a folder structure to keep files organized
+        folder_name = 'original_images'
+        return f"{folder_name}/{filename}"
 
     class Meta:
         verbose_name = 'image'
