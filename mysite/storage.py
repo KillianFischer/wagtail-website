@@ -12,17 +12,26 @@ class CustomWhiteNoiseStorage(CompressedManifestStaticFilesStorage):
             'mysite.js',
             'mysite.css',
             'styles.css',
-            '.map'  # Add this to skip source map files
+            '.map'
         ]
 
-        filtered_paths = {
-            path: paths[path] 
-            for path in paths 
-            if not any(pattern in path for pattern in skip_patterns)
-        }
-
+        filtered_paths = {}
         for path in paths:
             if any(pattern in path for pattern in skip_patterns):
-                yield path, None, False  # Skip processing these files entirely
+                # Directly yield skipped files without processing
+                if not dry_run:
+                    original_path = self.path(path)
+                    processed_path = self.path(paths[path])
+                    
+                    if os.path.exists(original_path):
+                        os.makedirs(os.path.dirname(processed_path), exist_ok=True)
+                        with open(original_path, 'rb') as source:
+                            with open(processed_path, 'wb') as dest:
+                                dest.write(source.read())
+                yield path, paths[path], True
+            else:
+                filtered_paths[path] = paths[path]
 
-        yield from super().post_process(filtered_paths, dry_run, **options) 
+        # Process remaining files
+        if filtered_paths:
+            yield from super().post_process(filtered_paths, dry_run, **options) 

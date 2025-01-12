@@ -162,46 +162,7 @@ STORAGES = {
 WHITENOISE_USE_FINDERS = True
 WHITENOISE_MANIFEST_STRICT = False
 WHITENOISE_ALLOW_ALL_ORIGINS = True
-WHITENOISE_ROOT = None  # Disable serving files from WHITENOISE_ROOT
-
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")
-MEDIA_URL = "/media/"
-
-# Wagtail settings
-
-WAGTAIL_SITE_NAME = "mysite"
-
-# Search
-# https://docs.wagtail.org/en/stable/topics/search/backends.html
-WAGTAILSEARCH_BACKENDS = {
-    "default": {
-        "BACKEND": "wagtail.search.backends.database",
-    }
-}
-
-# Base URL to use when referring to full URLs within the Wagtail admin backend -
-# e.g. in notification emails. Don't include '/admin' or a trailing slash
-WAGTAILADMIN_BASE_URL = "http://example.com"
-
-# Allowed file extensions for documents in the document library.
-# This can be omitted to allow all files, but note that this may present a security risk
-# if untrusted users are allowed to upload files -
-# see https://docs.wagtail.org/en/stable/advanced_topics/deploying.html#user-uploaded-files
-WAGTAILDOCS_EXTENSIONS = ['csv', 'docx', 'key', 'odt', 'pdf', 'pptx', 'rtf', 'txt', 'xlsx', 'zip']
-
-TAILWIND_APP_NAME = 'theme'
-
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'plankton-app-qnkmw.ondigitalocean.app']
-
-CSRF_TRUSTED_ORIGINS = ['https://plankton-app-qnkmw.ondigitalocean.app']
-
-INTERNAL_IPS = [
-    "127.0.0.1","localhost"
-]
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('SECRET_KEY', 'your-secret-key-here')
-
+WHITENOISE_ROOT = None
 
 # S3/Spaces settings
 AWS_ACCESS_KEY_ID = os.getenv('SPACES_ACCESS_KEY_ID')
@@ -220,86 +181,31 @@ AWS_S3_VERIFY = True
 AWS_S3_ADDRESSING_STYLE = "path"
 AWS_S3_SIGNATURE_VERSION = 's3v4'
 
-# Storage configuration
-STORAGES = {
-    'default': {
-        'BACKEND': 'storages.backends.s3boto3.S3Boto3Storage',
-    },
-    'staticfiles': {
-        'BACKEND': 'whitenoise.storage.CompressedManifestStaticFilesStorage',
-    }
-}
-
 # Media settings
 MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/"
 MEDIA_ROOT = ''
-DEFAULT_FILE_STORAGE = 'mysite.storage.CustomS3Boto3Storage'
 
-# Wagtail image model
+# Wagtail settings
+WAGTAIL_SITE_NAME = "mysite"
 WAGTAILIMAGES_IMAGE_MODEL = 'home.CustomImage'
-
-# Additional settings
-AWS_DEFAULT_ACL = 'public-read'
-AWS_QUERYSTRING_AUTH = False
-AWS_S3_FILE_OVERWRITE = False
-AWS_S3_USE_SSL = True
-AWS_S3_VERIFY = True
-AWS_S3_ADDRESSING_STYLE = "path"
-AWS_S3_SIGNATURE_VERSION = 's3v4'
-
-# Storage settings
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-STATICFILES_STORAGE = 'storages.backends.s3boto3.S3StaticStorage'
-
-# Media settings
-MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/"
-MEDIA_ROOT = ''
-
-# Wagtail specific settings
 WAGTAILIMAGES_FEATURE_DETECTION_ENABLED = False
 WAGTAIL_USAGE_COUNT_ENABLED = True
 WAGTAILIMAGES_MAX_UPLOAD_SIZE = 20 * 1024 * 1024  # 20MB
-
-# Keep static files local (using whitenoise)
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
-# Wagtail image settings
+WAGTAILIMAGES_MAX_IMAGE_PIXELS = 128000000  # 128 megapixels
+WAGTAILIMAGES_EXTENSIONS = ['gif', 'jpg', 'jpeg', 'png', 'webp']
 WAGTAILIMAGES_FORMAT_CONVERSIONS = {
     'bmp': 'jpeg',
     'webp': 'jpeg',
     'png': 'jpeg',
 }
 
-WAGTAILIMAGES_MAX_UPLOAD_SIZE = 20 * 1024 * 1024  # 20MB
-WAGTAILIMAGES_MAX_IMAGE_PIXELS = 128000000  # 128 megapixels
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'plankton-app-qnkmw.ondigitalocean.app']
 
-# Allowed image extensions
-WAGTAILIMAGES_EXTENSIONS = ['gif', 'jpg', 'jpeg', 'png', 'webp']
+CSRF_TRUSTED_ORIGINS = ['https://plankton-app-qnkmw.ondigitalocean.app']
 
-# Update these settings for DigitalOcean Spaces
-AWS_ACCESS_KEY_ID = os.getenv('SPACES_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY = os.getenv('SPACES_SECRET_ACCESS_KEY')
-AWS_STORAGE_BUCKET_NAME = os.getenv('SPACES_BUCKET_NAME')
-AWS_S3_REGION_NAME = os.getenv('SPACES_REGION')
-AWS_S3_ENDPOINT_URL = f"https://{AWS_S3_REGION_NAME}.digitaloceanspaces.com"
-AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.{AWS_S3_REGION_NAME}.digitaloceanspaces.com"
+INTERNAL_IPS = [
+    "127.0.0.1","localhost"
+]
 
-# Additional settings for public access
-AWS_DEFAULT_ACL = 'public-read'
-AWS_QUERYSTRING_AUTH = False
-AWS_S3_FILE_OVERWRITE = False
-
-# Media settings
-MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/"
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-
-# Add to your settings
-DEFAULT_FILE_STORAGE = 'mysite.storage.CustomS3Boto3Storage'
-
-# Custom image model
-WAGTAILIMAGES_IMAGE_MODEL = 'home.CustomImage'
-
-# Additional Wagtail settings
-WAGTAILIMAGES_FEATURE_DETECTION_ENABLED = False
-WAGTAIL_USAGE_COUNT_ENABLED = True
-WAGTAILIMAGES_MAX_UPLOAD_SIZE = 20 * 1024 * 1024  # 20MB
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = os.getenv('SECRET_KEY', 'your-secret-key-here')
