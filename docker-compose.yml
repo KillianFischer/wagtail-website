@@ -4,13 +4,13 @@ services:
     ports:
       - "8080:8080"
     environment:
-      - DJANGO_SETTINGS_MODULE=mysite.settings.base
+      - DJANGO_SETTINGS_MODULE=mysite.settings.dev
       - DEBUG=True
       - PYTHONPATH=/app
-      - SECRET_KEY=your-secret-key-here
       - ALLOWED_HOSTS=localhost,127.0.0.1
       - PYTHONUNBUFFERED=1
-      - STATICFILES_STORAGE=whitenoise.storage.CompressedStaticFilesStorage
+    env_file:
+      - .env
     volumes:
       - .:/app
       - static_volume:/app/staticfiles

@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block content %}
+<div class="container mx-auto p-8">
+    <h1 class="text-2xl mb-4">Image Test Page</h1>
+    
+    <!-- Debug Info -->
+    <div class="bg-gray-100 p-4 mb-8 rounded">
+        <h2 class="text-xl mb-2">Debug Info:</h2>
+        <pre class="text-sm">
+MEDIA_URL: {{ settings.MEDIA_URL }}
+AWS_S3_CUSTOM_DOMAIN: {{ settings.AWS_S3_CUSTOM_DOMAIN }}
+        </pre>
+    </div>
+    
+    {% for image in images %}
+        <div class="mb-8">
+            <h2 class="text-xl mb-2">Image: {{ image.title }}</h2>
+            
+            <!-- Image Details -->
+            <div class="bg-gray-100 p-4 mb-4 rounded">
+                <p>File name: {{ image.filename }}</p>
+                <p>File path: {{ image.file.name }}</p>
+            </div>
+            
+            <!-- Direct URL -->
+            <div class="mb-4">
+                <h3 class="text-lg mb-2">Direct URL:</h3>
+                <p class="text-sm mb-2">{{ image.file.url }}</p>
+                <img src="{{ image.file.url }}" alt="{{ image.title }}" class="max-w-full h-auto border border-gray-300">
+            </div>
+            
+            <!-- Wagtail Image Tag -->
+            <div class="mb-4">
+                <h3 class="text-lg mb-2">Wagtail Image Tag:</h3>
+                {% image image width-800 as img %}
+                <p class="text-sm mb-2">{{ img.url }}</p>
+                <img src="{{ img.url }}" alt="{{ img.alt }}" class="max-w-full h-auto border border-gray-300">
+            </div>
+        </div>
+        <hr class="my-8">
+    {% endfor %}
+
+    {% if not images %}
+        <p class="text-gray-500">No images found in the database.</p>
+    {% endif %}
+</div>
+{% endblock %} 

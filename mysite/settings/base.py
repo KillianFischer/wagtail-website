@@ -147,7 +147,31 @@ STATICFILES_DIRS = [
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
+# Storage configuration
+STORAGES = {
+    'default': {
+        'BACKEND': 'storages.backends.s3boto3.S3Boto3Storage',
+    },
+    'staticfiles': {
+        'BACKEND': 'mysite.storage.CustomWhiteNoiseStorage',
+    },
+    'original_images': {
+        'BACKEND': 'home.models.CustomS3Storage',
+    },
+    'renditions': {
+        'BACKEND': 'storages.backends.s3boto3.S3Boto3Storage',
+        'OPTIONS': {
+            'location': 'images'
+        }
+    }
+}
+
+# WhiteNoise settings
+WHITENOISE_USE_FINDERS = True
+WHITENOISE_MANIFEST_STRICT = False
+WHITENOISE_ALLOW_ALL_ORIGINS = True
+WHITENOISE_ROOT = None  # Disable serving files from WHITENOISE_ROOT
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = "/media/"
@@ -189,3 +213,131 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv('SECRET_KEY', 'your-secret-key-here')
+
+
+# S3/Spaces settings
+AWS_ACCESS_KEY_ID = os.getenv('SPACES_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.getenv('SPACES_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = 'mysite-bucket'
+AWS_S3_REGION_NAME = 'us-east-1'
+AWS_S3_ENDPOINT_URL = 'https://fra1.digitaloceanspaces.com'
+AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.fra1.digitaloceanspaces.com"
+AWS_DEFAULT_ACL = 'public-read'
+AWS_QUERYSTRING_AUTH = False
+AWS_S3_FILE_OVERWRITE = False
+
+# Storage configuration
+STORAGES = {
+    'default': {
+        'BACKEND': 'storages.backends.s3boto3.S3Boto3Storage',
+    },
+    'staticfiles': {
+        'BACKEND': 'mysite.storage.CustomWhiteNoiseStorage',
+    }
+}
+
+# Media settings
+MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/"
+MEDIA_ROOT = ''
+
+# Wagtail settings
+WAGTAILIMAGES_IMAGE_MODEL = 'home.CustomImage'
+
+# Additional settings
+AWS_DEFAULT_ACL = 'public-read'
+AWS_QUERYSTRING_AUTH = False
+AWS_S3_FILE_OVERWRITE = False
+AWS_S3_USE_SSL = True
+AWS_S3_VERIFY = True
+AWS_S3_ADDRESSING_STYLE = "path"
+AWS_S3_SIGNATURE_VERSION = 's3v4'
+
+# Storage settings
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3StaticStorage'
+
+# Media settings
+MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/"
+MEDIA_ROOT = ''
+
+# Wagtail specific settings
+WAGTAILIMAGES_FEATURE_DETECTION_ENABLED = False
+WAGTAIL_USAGE_COUNT_ENABLED = True
+WAGTAILIMAGES_MAX_UPLOAD_SIZE = 20 * 1024 * 1024  # 20MB
+
+# Image paths
+ORIGINAL_IMAGES_PATH = 'original_images'
+IMAGES_PATH = 'images'
+
+# Keep static files local (using whitenoise)
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# Add these to your existing settings
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'INFO',
+        },
+        'storages': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        },
+        'boto3': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        },
+        'botocore': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        },
+    },
+}
+
+# Wagtail image settings
+WAGTAILIMAGES_FORMAT_CONVERSIONS = {
+    'bmp': 'jpeg',
+    'webp': 'jpeg',
+    'png': 'jpeg',
+}
+
+WAGTAILIMAGES_MAX_UPLOAD_SIZE = 20 * 1024 * 1024  # 20MB
+WAGTAILIMAGES_MAX_IMAGE_PIXELS = 128000000  # 128 megapixels
+
+# Allowed image extensions
+WAGTAILIMAGES_EXTENSIONS = ['gif', 'jpg', 'jpeg', 'png', 'webp']
+
+# Update these settings for DigitalOcean Spaces
+AWS_ACCESS_KEY_ID = os.getenv('SPACES_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.getenv('SPACES_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = os.getenv('SPACES_BUCKET_NAME')
+AWS_S3_REGION_NAME = os.getenv('SPACES_REGION')
+AWS_S3_ENDPOINT_URL = f"https://{AWS_S3_REGION_NAME}.digitaloceanspaces.com"
+AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.{AWS_S3_REGION_NAME}.digitaloceanspaces.com"
+
+# Additional settings for public access
+AWS_DEFAULT_ACL = 'public-read'
+AWS_QUERYSTRING_AUTH = False
+AWS_S3_FILE_OVERWRITE = False
+
+# Media settings
+MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/"
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+# Add to your settings
+DEFAULT_FILE_STORAGE = 'mysite.storage.CustomS3Boto3Storage'
+
+# Custom image model
+WAGTAILIMAGES_IMAGE_MODEL = 'home.CustomImage'
+
+# Additional Wagtail settings
+WAGTAILIMAGES_FEATURE_DETECTION_ENABLED = False
+WAGTAIL_USAGE_COUNT_ENABLED = True
+WAGTAILIMAGES_MAX_UPLOAD_SIZE = 20 * 1024 * 1024  # 20MB
